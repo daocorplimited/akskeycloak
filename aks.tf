@@ -8,6 +8,7 @@ resource "azurerm_kubernetes_cluster" "kubernetes" {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_D2_v2"
+    os_sku     = "Ubuntu"
   }
 
   identity {
@@ -17,6 +18,13 @@ resource "azurerm_kubernetes_cluster" "kubernetes" {
   tags = {
     Environment = "Production"
   }
+}
+
+
+data "azurerm_kubernetes_cluster" "credentials" {
+  name                = azurerm_kubernetes_cluster.kubernetes.name
+  resource_group_name = azurerm_resource_group.default.name
+  depends_on = [azurerm_kubernetes_cluster.kubernetes]
 }
 
 output "client_certificate" {
