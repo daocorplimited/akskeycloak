@@ -5,4 +5,9 @@ resource "helm_release" "keycloak" {
   chart      = "keycloak" 
   depends_on = [azurerm_kubernetes_cluster.kubernetes, data.azurerm_kubernetes_cluster.credentials]
 
+  set {
+    name  = "restartPolicy"
+    value = "Always"
+  }
+
 }
